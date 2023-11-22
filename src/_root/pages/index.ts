@@ -1,1 +1,9 @@
-export { default as Home } from './Home';
+export { default as Home } from "./Home";
+export { default as Explore } from "./Explore";
+export { default as People } from "./People";
+export { default as PostCreate } from "./PostCreate";
+export { default as PostDetails } from "./PostDetails";
+export { default as PostEdit } from "./PostEdit";
+export { default as Profile } from "./Profile";
+export { default as ProfileUpdate } from "./ProfileUpdate";
+export { default as Saved } from "./Saved";
