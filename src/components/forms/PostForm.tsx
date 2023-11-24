@@ -70,7 +70,7 @@ const PostForm = ({ post }: IProps) => {
               <FormLabel className="shad-form_label">Caption</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="shadcn" {...field}
+                  {...field}
                   className="shad-textarea custom-scrollbar"
                 />
               </FormControl>
