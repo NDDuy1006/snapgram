@@ -16,17 +16,19 @@ import { Textarea } from "../ui/textarea";
 import FileUploader from "../shared/FileUploader";
 import { PostValidation } from "@/lib/validation";
 import { Models } from "appwrite";
-import { useCreatePost } from "@/lib/react-query/queriesAndMutations";
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
 import { useToast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
 
 interface IProps {
-  post?: Models.Document
+  post?: Models.Document;
+  action: "Create" | "Update"
 }
 
-const PostForm = ({ post }: IProps) => {
-  const { mutateAsync: createPost, isPending: isLoadingCreate } = useCreatePost()
+const PostForm = ({ post, action }: IProps) => {
+  const { mutateAsync: createPost, isPending: isLoadingCreate } = useCreatePost();
+  const { mutateAsync: updatePost, isPending: isLoadingUpdate } = useUpdatePost();
   const { user } = useUserContext();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -42,6 +44,21 @@ const PostForm = ({ post }: IProps) => {
   })
  
   async function onSubmit(values: z.infer<typeof PostValidation>) {
+    if (post && action === "Update") {
+      const updatedPost = await updatePost({
+        ...values,
+        postId: post.$id,
+        imageId: post?.imageId,
+        imageUrl: post?.imageUrl
+      })
+
+      if (!updatedPost) {
+        toast({ title: "Try again later" })
+      }
+
+      return navigate(`/posts/${post.$id}`)
+    }
+
     const newPost = await createPost({
       ...values,
       userId: user.id,
@@ -83,7 +100,9 @@ const PostForm = ({ post }: IProps) => {
           name="file"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="shad-form_label">Add Photos</FormLabel>
+              <FormLabel className="shad-form_label">
+                {action === "Update" ? "Edit " : "Add "} Photos
+              </FormLabel>
               <FormControl>
                 <FileUploader
                   fieldChange={field.onChange}
@@ -99,7 +118,9 @@ const PostForm = ({ post }: IProps) => {
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="shad-form_label">Add Location</FormLabel>
+              <FormLabel className="shad-form_label">
+                {action === "Update" ? "Edit " : "Add "} Location
+              </FormLabel>
               <FormControl>
                 <Input type="text" className="shad-input" {...field} />
               </FormControl>
@@ -113,7 +134,7 @@ const PostForm = ({ post }: IProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="shad-form_label">
-                Add Tags (separated by comma " , ")
+                {action === "Update" ? "Edit " : "Add "} Tags (separated by comma " , ")
               </FormLabel>
               <FormControl>
                 <Input
@@ -137,8 +158,10 @@ const PostForm = ({ post }: IProps) => {
           <Button
             type="submit"
             className="shad-button_primary whitespace-nowrap"
+            disabled={isLoadingCreate || isLoadingUpdate}
           >
-            Submit
+            {isLoadingCreate || isLoadingUpdate && "...Loading"}
+            {action} Post
           </Button>
         </div>
       </form>

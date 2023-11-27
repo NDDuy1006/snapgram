@@ -13,7 +13,6 @@ const PostStats = ({ post, userId }: IProps) => {
 
   const [likes, setLikes] = useState(likeList);
   const [isSaved, setIsSaved] = useState(false);
-  console.log("🚀🚀🚀 Oi oi oi ~ isSaved 🚀🚀🚀:", isSaved)
 
   const { mutate: likePost } = useLikePost();
   const { mutate: savePost} = useSavePost();

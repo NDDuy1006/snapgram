@@ -194,7 +194,7 @@
 
   /* File uploader */
   .file_uploader-img {
-    @apply h-80 lg:h-[480px] w-full rounded-[24px] object-cover object-top;
+    @apply h-80 lg:h-[480px] w-full rounded-[24px] object-contain;
   }
 
   .file_uploader-label {
@@ -233,7 +233,11 @@
   }
 
   .post-card_img {
-    @apply h-80 xs:h-[400px] lg:h-[520px] w-full rounded-[24px] object-cover mb-5;
+    @apply object-contain;
+  }
+
+  .post-card_img-wrapper {
+    @apply rounded-[24px] overflow-hidden
   }
 
   /* Topbar */

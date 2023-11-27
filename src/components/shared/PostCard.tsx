@@ -41,7 +41,7 @@ const PostCard = ({ post }: IProps) => {
           </div>
         </div>
         <Link
-          to={`/update-post/${post.$id}`}
+          to={`/post-update/${post.$id}`}
           className={`${user.id !== post.author.$id && "hidden"}`}
         >
           <img src="/assets/icons/edit.svg" alt="edit" width={20} height={20} />
@@ -58,11 +58,13 @@ const PostCard = ({ post }: IProps) => {
             ))}
           </ul>
         </div>
-        <img
-          src={post.imageUrl || "/assets/icons/profile-placeholder.svg"}
-          className="post-card_img"
-          alt="post image"
-        />
+        <div className="post-card_img-wrapper mb-5">
+          <img
+            src={post.imageUrl || "/assets/icons/profile-placeholder.svg"}
+            className="object-cover"
+            alt="post image"
+          />
+        </div>
       </Link>
       <PostStats post={post} userId={user.id} />
     </div>

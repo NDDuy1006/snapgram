@@ -9,7 +9,7 @@ interface IProps {
 
 const FileUploader = ({ fieldChange, mediaUrl }: IProps) => {
   const [file, setFile] = useState<File[]>([]);
-  const [fileUrl, setFileUrl] = useState("");
+  const [fileUrl, setFileUrl] = useState(mediaUrl);
 
   const onDrop = useCallback(
     (files: FileWithPath[]) => {
@@ -39,11 +39,13 @@ const FileUploader = ({ fieldChange, mediaUrl }: IProps) => {
         fileUrl ? (
           <>
             <div className="flex flex-1 justify-center w-full p-5 lg:p-10">
-              <img
-                src={fileUrl}
-                className="file_uploader-img"
-                alt="image"
-              />
+              <div className="post-card_img-wrapper">
+                <img
+                  src={fileUrl}
+                  className="file_uploader-img"
+                  alt="image"
+                />
+              </div>
             </div>
             <p className="file_uploader-label">Click or drag photo to replace</p>
           </>
